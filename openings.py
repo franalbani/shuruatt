@@ -23,7 +23,7 @@ class BoardGraph:
         node_id = self.position_id()
         png = CACHE.joinpath(node_id + '.png')
         self.save_png(arrow)
-        self.dg.node(node_id, label='', image=str(png), shape='rect', xlabel=name)
+        self.dg.node(node_id, label=name, image=str(png), shape='square', imagepos='c', labelloc='t', height='6')
         return node_id
 
     def save_png(self, arrow=None):
