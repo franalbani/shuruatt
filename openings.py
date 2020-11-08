@@ -19,25 +19,26 @@ class BoardGraph:
     def position_id(self):
         return md5(repr(self.board).encode('utf8')).hexdigest()
 
-    def _add_node_from_position(self, name):
+    def _add_node_from_position(self, name, arrow=None):
         node_id = self.position_id()
         png = CACHE.joinpath(node_id + '.png')
-        self.save_png()
+        self.save_png(arrow)
         self.dg.node(node_id, label='', image=str(png), shape='rect', xlabel=name)
         return node_id
 
-    def save_png(self):
-        svg = board2svg(self.board)
+    def save_png(self, arrow=None):
+        svg = board2svg(self.board, arrows=[arrow] if arrow else [])
         node_id = self.position_id()
         png = CACHE.joinpath(node_id + '.png')
         svg2png(bytestring=svg, write_to=str(png))
 
     def push(self, move, name):
-        assert move in self.board.legal_moves
+        san_move = bg.board.parse_san(move)
+        assert san_move in self.board.legal_moves
         father_id = self.position_id()
-        self.board.push(move)
-        node_id = self._add_node_from_position(name)
-        self.dg.edge(father_id, node_id, label=' ' + str(move))
+        self.board.push_san(move)
+        node_id = self._add_node_from_position(name, arrow=chess.svg.Arrow(san_move.from_square, san_move.to_square))
+        self.dg.edge(father_id, node_id, label=' ' + move)
 
     def pop(self):
         return self.board.pop()
@@ -47,33 +48,34 @@ from contextlib import contextmanager
 @contextmanager
 def line(bg, move, name):
     try:
-        yield bg.push(chess.Move.from_uci(move), name)
+        yield bg.push(move, name)
     finally:
         bg.pop()
 
 bg = BoardGraph()
 
-with line(bg, 'e2e4', "King's Pawn"):
-    with line(bg, 'e7e5', 'Open game'):
-        with line(bg, 'g1f3', "King's Knight"):
-            with line(bg, 'g8f6', "Petrov's Defense"):
-                with line(bg, 'f3e5', '...'):
-                    with line(bg, 'f6e4', 'Russian game: ¡¡Cuidado!!!'):
+with line(bg, 'e4', "King's Pawn") as l:
+    
+    with line(bg, 'e5', 'Open game'):
+        with line(bg, 'Nf3', "King's Knight"):
+            with line(bg, 'Nf6', "Petrov's Defense"):
+                with line(bg, 'Nxe5', '...'):
+                    with line(bg, 'Nxe4', 'Russian game: ¡¡Cuidado!!!'):
                         pass
-            with line(bg, 'b8c6', "King's Knight: Normal variation"):
-                with line(bg, 'f1c4', 'Italian game'):
-                    with line(bg, 'f8c5', 'Italian game: Giuoco Piano'):
-                        with line(bg, 'b2b4', "Italian game: Evan's Gambit"):
+            with line(bg, 'Nc6', "King's Knight: Normal variation"):
+                with line(bg, 'Bc4', 'Italian game'):
+                    with line(bg, 'Bc5', 'Italian game: Giuoco Piano'):
+                        with line(bg, 'b4', "Italian game: Evan's Gambit"):
                             pass
-                with line(bg, 'f1b5', 'Ruy Lopez'):
+                with line(bg, 'Bb5', 'Ruy Lopez'):
                     pass
-                with line(bg, 'd2d4', 'Scotch Game'):
+                with line(bg, 'd4', 'Scotch Game'):
                     pass
-            with line(bg, 'd7d6', "Philidor's Defense"):
+            with line(bg, 'd6', "Philidor's Defense"):
                 pass
 
-with line(bg, 'd2d4', "Queen's Pawn"):
-    with line(bg, 'd7d5', "Closed game"):
-        with line(bg, 'c2c4', "Queen's Gambit"):
-            with line(bg, 'd5c4', "Queen's Gambit accepted"):
+with line(bg, 'd4', "Queen's Pawn"):
+    with line(bg, 'd5', "Closed game"):
+        with line(bg, 'c4', "Queen's Gambit"):
+            with line(bg, 'dxc4', "Queen's Gambit accepted"):
                 pass
