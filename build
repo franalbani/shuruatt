@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+
+from openings import bg
+
+bg.dg.render('openings', format='svg')
