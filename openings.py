@@ -33,6 +33,7 @@ class BoardGraph:
         svg2png(bytestring=svg, write_to=str(png))
 
     def push(self, move, name):
+        assert move in self.board.legal_moves
         father_id = self.position_id()
         self.board.push(move)
         node_id = self._add_node_from_position(name)
@@ -41,38 +42,38 @@ class BoardGraph:
     def pop(self):
         return self.board.pop()
 
+from contextlib import contextmanager
+
+@contextmanager
+def line(bg, move, name):
+    try:
+        yield bg.push(chess.Move.from_uci(move), name)
+    finally:
+        bg.pop()
 
 bg = BoardGraph()
 
-bg.push(chess.Move.from_uci('e2e4'), "King's Pawn")
+with line(bg, 'e2e4', "King's Pawn"):
+    with line(bg, 'e7e5', 'Open game'):
+        with line(bg, 'g1f3', "King's Knight"):
+            with line(bg, 'g8f6', "Petrov's Defense"):
+                with line(bg, 'f3e5', '...'):
+                    with line(bg, 'f6e4', 'Russian game: ¡¡Cuidado!!!'):
+                        pass
+            with line(bg, 'b8c6', "King's Knight: Normal variation"):
+                with line(bg, 'f1c4', 'Italian game'):
+                    with line(bg, 'f8c5', 'Italian game: Giuoco Piano'):
+                        with line(bg, 'b2b4', "Italian game: Evan's Gambit"):
+                            pass
+                with line(bg, 'f1b5', 'Ruy Lopez'):
+                    pass
+                with line(bg, 'd2d4', 'Scotch Game'):
+                    pass
+            with line(bg, 'd7d6', "Philidor's Defense"):
+                pass
 
-_m = bg.pop()
-bg.push(chess.Move.from_uci('d2d4'), "Queen's Pawn")
-
-bg.pop()
-
-bg.board.push(_m)
-
-bg.push(chess.Move.from_uci('e7e5'), 'Open game')
-bg.push(chess.Move.from_uci('g1f3'), "King's Knight")
-bg.push(chess.Move.from_uci('g8f6'), "Petrov's Defense")
-bg.push(chess.Move.from_uci('f3e5'), '...')
-bg.push(chess.Move.from_uci('f6e4'), 'Russian game: ¡¡Cuidado!!!')
-bg.pop()
-bg.pop()
-bg.pop()
-
-bg.push(chess.Move.from_uci('b8c6'), "King's Knight: Normal variation")
-bg.push(chess.Move.from_uci('f1c4'), 'Italian game')
-bg.push(chess.Move.from_uci('f8c5'), 'Italian game: Giuoco Piano')
-bg.push(chess.Move.from_uci('b2b4'), "Italian game: Evan's Gambit")
-#   # Scotch Game
-#   g.e4.s.e5.s.Nf3.s.Nc3.s.d4.f.ScotchGame(shape='rectangle')
-#   
-#   # Philidor Defense
-#   g.e4.s.e5.s.Nf3.s.d6.f.PhilidorDefense(shape='rectangle')
-#   
-#   # Ruy López
-#   g.e4.s.e5.s.Nf3.s.Nf6.s.Bb5.f.RuyLopez(shape='rectangle')
-#   
-#   
+with line(bg, 'd2d4', "Queen's Pawn"):
+    with line(bg, 'd7d5', "Closed game"):
+        with line(bg, 'c2c4', "Queen's Gambit"):
+            with line(bg, 'd5c4', "Queen's Gambit accepted"):
+                pass
