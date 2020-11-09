@@ -67,6 +67,13 @@ with line(bg, 'e4', "King's Pawn") as l:
                     with line(bg, 'Bc5', 'Italian game: Giuoco Piano'):
                         with line(bg, 'b4', "Italian game: Evan's Gambit"):
                             pass
+                    with line(bg, 'Nf6', 'Italian game: Two Knights Defense'):
+                        with line(bg, 'Ng5', 'Italian game: Two Knights Defense & Knight Attack'):
+                            with line(bg, 'd5', 'Italian game: Two Knights Defense & Knight Attack: Normal variation'):
+                                with line(bg, 'exd5', '...'):
+                                    with line(bg, 'Nxd5', '...'):
+                                        with line(bg, 'Nxf7', 'Italian game: Fried Liver attack'):
+                                            pass
                 with line(bg, 'Bb5', 'Ruy Lopez'):
                     pass
                 with line(bg, 'd4', 'Scotch Game'):
