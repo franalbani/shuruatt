@@ -2,4 +2,4 @@
 
 from openings import bg
 
-bg.dg.render('openings', format='svg')
+bg.save_svg('openings.svg')

@@ -4,6 +4,8 @@ from cairosvg import svg2png
 from graphviz import Digraph
 from hashlib import md5
 from pathlib import Path
+import networkx as nx
+from networkx.drawing.nx_agraph import graphviz_layout, to_agraph
 
 
 CACHE = Path('.png_cache/')
@@ -13,8 +15,13 @@ CACHE.mkdir(exist_ok=True)
 class BoardGraph:
     def __init__(self):
         self.board = chess.Board()
-        self.dg = Digraph()
+        self.dg = nx.DiGraph()
         self._add_node_from_position('Initial')
+
+    def save_svg(self, path):
+        A = to_agraph(self.dg)
+        A.layout('dot')
+        A.draw(path)
 
     def position_id(self):
         return md5(repr(self.board).encode('utf8')).hexdigest()
@@ -23,7 +30,7 @@ class BoardGraph:
         node_id = self.position_id()
         png = CACHE.joinpath(node_id + '.png')
         self.save_png(arrow)
-        self.dg.node(node_id, label=name, image=str(png), shape='square', imagepos='c', labelloc='t', height='6')
+        self.dg.add_node(node_id, label=name, image=str(png), shape='square', imagepos='c', labelloc='t', height='6')
         return node_id
 
     def save_png(self, arrow=None):
@@ -38,11 +45,12 @@ class BoardGraph:
         father_id = self.position_id()
         self.board.push_san(move)
         node_id = self._add_node_from_position(name, arrow=chess.svg.Arrow(san_move.from_square, san_move.to_square))
-        self.dg.edge(father_id, node_id, label=' ' + move)
+        self.dg.add_edge(father_id, node_id, label=' ' + move)
 
     def pop(self):
         return self.board.pop()
 
+ 
 from contextlib import contextmanager
 
 @contextmanager
@@ -52,10 +60,10 @@ def line(bg, move, name):
     finally:
         bg.pop()
 
+
 bg = BoardGraph()
 
-with line(bg, 'e4', "King's Pawn") as l:
-    
+with line(bg, 'e4', "King's Pawn"):
     with line(bg, 'e5', 'Open game'):
         with line(bg, 'Nf3', "King's Knight"):
             with line(bg, 'Nf6', "Petrov's Defense"):

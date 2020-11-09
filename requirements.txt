@@ -1,3 +1,4 @@
 python-chess
-graphviz
+pygraphviz
 cairosvg
+networkx
