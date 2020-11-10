@@ -16,10 +16,10 @@ CACHE.mkdir(exist_ok=True)
 class BoardGraph:
     def __init__(self):
         self.board = chess.Board()
-        self.dg = nx.DiGraph()
+        self.dg = nx.DiGraph(bgcolor='bisque')
 
         node_id = self.position_id()
-        self.dg.add_node(node_id, label='Initial')
+        self.dg.add_node(node_id, title='Initial', comment='Infinitos caminos se abren...')
         self.save_png()
 
     def save_svg(self, path):
@@ -33,26 +33,29 @@ class BoardGraph:
         png_path = CACHE.joinpath(node_id + '.png')
         svg = board2svg(self.board, arrows=node.get('arrows', []))
         svg2png(bytestring=svg, write_to=str(png_path))
-        node['image'] = str(png_path)
-        node['shape'] = 'square'
-        node['imagepos'] = 'c'
-        node['labelloc'] = 't'
-        node['height'] = 6
+        node['shape'] = 'rect'
+        title = node['title']
+        comment = node.get('comment', '')
+        node['label'] = f'<<table cellspacing=\"0\" border=\"0\" cellborder=\"1\">' + \
+                             f'<tr><td>{title}</td></tr>' + \
+                             f'<tr><td><img src=\"{png_path}\" /></td></tr>' + \
+                             f'<tr><td>{comment}</td></tr>' + \
+                         '</table>>'
         
     def position_id(self):
         return md5(repr(self.board).encode('utf8')).hexdigest()
 
     @contextmanager
-    def pushed_to(self, move_san, label=''):
+    def pushed_to(self, move_san, title=''):
         try:
             current_id = self.position_id()
             move = self.board.parse_san(move_san)
             self.board.push_san(move_san)
             new_id = self.position_id()
-            self.dg.add_node(new_id, label=label, arrows=[(move.from_square, move.to_square)])
+            self.dg.add_node(new_id, title=title, arrows=[(move.from_square, move.to_square)])
             self.dg.add_edge(current_id, new_id, label=' ' + move_san)
-            yield self.dg.nodes[new_id]
-            arrows = self.dg.nodes[new_id]['arrows']
+            node = self.dg.nodes[new_id]
+            yield node
             self.save_png()
         finally:
             self.board.pop()
@@ -61,12 +64,39 @@ class BoardGraph:
 bg = BoardGraph()
 
 with bg.pushed_to('e4', "King's Pawn") as position:
-    position['comment'] = 'Whites takes control of the center'
-    position['arrows'].append(chess.svg.Arrow(chess.E4, chess.D5, color='red'))
-    position['arrows'].append(chess.svg.Arrow(chess.E4, chess.F5, color='red'))
+    position['comment'] = 'Blancas toma control del centro<br/>y abre las diagonales para la Dama y el alfil f'
+    # position['arrows'].append(chess.svg.Arrow(chess.E4, chess.D5, color='red'))
+    # position['arrows'].append(chess.svg.Arrow(chess.E4, chess.F5, color='red'))
 
     with bg.pushed_to('e5', 'Open game') as position:
+        position['comment'] = 'Negras reclama su parte del centro<br/>y también abre las diagonales'
+
+        with bg.pushed_to('Bc4', "Bishop's opening") as position:
+            position['comment'] = 'Blancas ataca al peón débil en f7'
+            position['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
+
+            with bg.pushed_to('Nf6', "...") as position:
+                position['comment'] = 'Negras ignora la amenaza y ataca e4'
+                position['arrows'].append(chess.svg.Arrow(chess.F6, chess.E4, color='red'))
+                position['fillcolor'] = 'yellow'
+                position['style'] = 'filled'
+
+                with bg.pushed_to('Qh5', "...") as position:
+                    position['comment'] = 'Blancas aprovecha y prepara un mate en 1 en f7'
+                    position['arrows'].append(chess.svg.Arrow(chess.H5, chess.F7, color='red'))
+                    position['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
+
+                    with bg.pushed_to('Nxe4', "...") as position:
+                        position['comment'] = 'Negras no se dan por aludidas'
+
+                        with bg.pushed_to('Qxf7', "Scholar's mate / Mate del pastor") as position:
+                            position['comment'] = 'Jaque mate. Gana Blancas'
+                            position['fillcolor'] = 'white'
+                            position['style'] = 'filled'
+
         with bg.pushed_to('Nf3', "King's Knight") as position:
+            position['comment'] = 'Whites attacks e5 pawn'
+            position['arrows'].append(chess.svg.Arrow(chess.F3, chess.E5, color='red'))
             with bg.pushed_to('Nf6', "Petrov's Defense"):
                 with bg.pushed_to('Nxe5', '...'):
                     with bg.pushed_to('Nxe4', 'Russian game: ¡¡Cuidado!!!'):
@@ -77,8 +107,8 @@ with bg.pushed_to('e4', "King's Pawn") as position:
                         with bg.pushed_to('b4', "Italian game: Evan's Gambit"):
                             pass
                     with bg.pushed_to('Nf6', 'Italian game: Two Knights Defense'):
-                        with bg.pushed_to('Ng5', 'Italian game: Two Knights Defense & Knight Attack'):
-                            with bg.pushed_to('d5', 'Italian game: Two Knights Defense & Knight Attack: Normal variation'):
+                        with bg.pushed_to('Ng5', 'Italian game: Two Knights Defense &amp; Knight Attack'):
+                            with bg.pushed_to('d5', 'Italian game: Two Knights Defense &amp; Knight Attack: Normal variation'):
                                 with bg.pushed_to('exd5', '...'):
                                     with bg.pushed_to('Nxd5', '...'):
                                         with bg.pushed_to('Nxf7', 'Italian game: Fried Liver attack'):
