@@ -95,14 +95,18 @@ with bg.pushed_to('e4', "King's Pawn") as position:
                             position['style'] = 'filled'
 
         with bg.pushed_to('Nf3', "King's Knight") as position:
-            position['comment'] = 'Whites attacks e5 pawn'
+            position['comment'] = 'Blancas amenaza el peón e5'
             position['arrows'].append(chess.svg.Arrow(chess.F3, chess.E5, color='red'))
             with bg.pushed_to('Nf6', "Petrov's Defense"):
                 with bg.pushed_to('Nxe5', '...'):
                     with bg.pushed_to('Nxe4', 'Russian game: ¡¡Cuidado!!!'):
                         pass
-            with bg.pushed_to('Nc6', "King's Knight: Normal variation"):
-                with bg.pushed_to('Bc4', 'Italian game'):
+            with bg.pushed_to('Nc6', "King's Knight: Normal variation") as position:
+                position['comment'] = 'Negras defiende el peón e5'
+                position['arrows'].append(chess.svg.Arrow(chess.C6, chess.E5, color='yellow'))
+                with bg.pushed_to('Bc4', 'Italian game') as position:
+                    position['comment'] = 'Blancas ataca al peón débil en f7'
+                    position['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
                     with bg.pushed_to('Bc5', 'Italian game: Giuoco Piano'):
                         with bg.pushed_to('b4', "Italian game: Evan's Gambit"):
                             pass
@@ -120,8 +124,9 @@ with bg.pushed_to('e4', "King's Pawn") as position:
             with bg.pushed_to('d6', "Philidor's Defense"):
                 pass
 
-with bg.pushed_to('d4', "Queen's Pawn"):
-    with bg.pushed_to('d5', "Closed game"):
+with bg.pushed_to('d4', "Queen's Pawn") as position:
+    position['comment'] = 'Blancas toma control del centro<br/>pero sólo le abre paso al alfil c'
+    with bg.pushed_to('d5', "Closed game") as position:
         with bg.pushed_to('c4', "Queen's Gambit"):
             with bg.pushed_to('dxc4', "Queen's Gambit accepted"):
                 pass
