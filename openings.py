@@ -1,4 +1,5 @@
 import chess
+from chess.pgn import read_game
 from chess.svg import board as board2svg
 from cairosvg import svg2png
 from graphviz import Digraph
@@ -189,3 +190,18 @@ with bg.pushed_to('d4', "Queen's Pawn") as position:
         with bg.pushed_to('c4', "Queen's Gambit"):
             with bg.pushed_to('dxc4', "Queen's Gambit accepted"):
                 pass
+
+
+with open('estoykastico_vs_SlickSherm_2020.11.11.pgn') as pgn:
+    game = read_game(pgn)
+
+for m in game.mainline_moves():
+    san = bg.board.san(m)
+    print(f'{m}: {san}')
+    p = bg.push(san, "...")
+    if bg.board.is_checkmate() or bg.depth == 8:
+        p['title'] = game.headers['White'] + 'vs.' + game.headers['Black']
+        p['year'] = game.headers['Date']
+        p['fillcolor'] = 'white'
+        p['style'] = 'filled'
+    bg.save_png()
