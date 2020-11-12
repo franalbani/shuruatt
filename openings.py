@@ -42,6 +42,10 @@ class BoardGraph:
                              f'<tr><td>Año: {year}</td></tr>' + \
                              f'<tr><td><img src=\"{png_path}\" /></td></tr>' + \
                              f'<tr><td>{comment}</td></tr>'
+        url= node.get('url', None)
+        if url:
+            node['label'] += f'<tr><td href="{url}">Wikipedia</td></tr>'
+
         games = node['games']
         if games:
             node['label'] += f'<tr><td>Juegos notables:</td></tr>'
@@ -130,6 +134,16 @@ with bg.pushed_to('e4', "King's Pawn") as position:
                         position['arrows'].append(chess.svg.Arrow(chess.D6, chess.E5, color='red'))
                         with bg.pushed_to('Nxf7', 'Cochrane Gambit') as position:
                             position['comment'] = 'Blancas no tiene marcha atrás'
+                            with bg.pushed_to('Kxf7', '...') as p:
+                                p['comment'] = 'Negras no tiene alternativa que salvar a la torre<br/>renunciando al derecho de enrrocarse.'
+                                with bg.pushed_to('d4', 'Cochrane Gambit: center variation') as p:
+                                    p['comment'] = 'Blancas aprovecha que negras tiene mucho en su plato<br/>e incluso le tienta a Nxe4.'
+                                    with bg.pushed_to('Nxe4', '...') as p:
+                                        p['fillcolor'] = 'red'
+                                        p['style'] = 'filled'
+                                        p['comment'] = 'Negras cae en la trampa.'
+                                        with bg.pushed_to('Qh5', '...') as p:
+                                            p['comment'] = 'Blancas dará una serie de jaques que<br/> irremediablemente terminan en Qxe4.'
                             
             with bg.pushed_to('Nc6', "King's Knight: Normal variation") as position:
                 position['comment'] = 'Negras defiende el peón e5'
@@ -139,6 +153,7 @@ with bg.pushed_to('e4', "King's Pawn") as position:
                     position['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
                     with bg.pushed_to('Bc5', 'Italian game: Giuoco Piano'):
                         with bg.pushed_to('b4', "Italian game: Evan's Gambit") as position:
+                            position['url'] = 'https://en.wikipedia.org/wiki/Evans_Gambit'
                             position['year'] = 1827
                             position['games'] += [(1852, 'Evergreen game')]
                             position['games'] += [(1995, 'Kasparov vs. Anand')]
