@@ -19,7 +19,7 @@ class BoardGraph:
         self.dg = nx.DiGraph(bgcolor='bisque')
 
         node_id = self.position_id()
-        self.dg.add_node(node_id, title='Initial', comment='Infinitos caminos se abren...')
+        self.dg.add_node(node_id, title='Initial', comment='Infinitos caminos se abren...', games=[])
         self.save_png()
 
     def save_svg(self, path):
@@ -33,14 +33,21 @@ class BoardGraph:
         png_path = CACHE.joinpath(node_id + '.png')
         svg = board2svg(self.board, arrows=node.get('arrows', []))
         svg2png(bytestring=svg, write_to=str(png_path))
-        node['shape'] = 'rect'
+        node['shape'] = 'none'
         title = node['title']
+        year = node.get('year', '????')
         comment = node.get('comment', '')
         node['label'] = f'<<table cellspacing=\"0\" border=\"0\" cellborder=\"1\">' + \
                              f'<tr><td>{title}</td></tr>' + \
+                             f'<tr><td>Año: {year}</td></tr>' + \
                              f'<tr><td><img src=\"{png_path}\" /></td></tr>' + \
-                             f'<tr><td>{comment}</td></tr>' + \
-                         '</table>>'
+                             f'<tr><td>{comment}</td></tr>'
+        games = node['games']
+        if games:
+            node['label'] += f'<tr><td>Juegos notables:</td></tr>'
+            for y, g in games:
+                node['label'] += f'<tr><td>{y}: {g}</td></tr>'
+        node['label'] += '</table>>'
         
     def position_id(self):
         return md5(repr(self.board).encode('utf8')).hexdigest()
@@ -55,6 +62,7 @@ class BoardGraph:
             self.dg.add_node(new_id, title=title, arrows=[(move.from_square, move.to_square)])
             self.dg.add_edge(current_id, new_id, label=' ' + move_san)
             node = self.dg.nodes[new_id]
+            node['games'] = []
             yield node
             self.save_png()
         finally:
@@ -97,10 +105,32 @@ with bg.pushed_to('e4', "King's Pawn") as position:
         with bg.pushed_to('Nf3', "King's Knight") as position:
             position['comment'] = 'Blancas amenaza el peón e5'
             position['arrows'].append(chess.svg.Arrow(chess.F3, chess.E5, color='red'))
-            with bg.pushed_to('Nf6', "Petrov's Defense"):
-                with bg.pushed_to('Nxe5', '...'):
-                    with bg.pushed_to('Nxe4', 'Russian game: ¡¡Cuidado!!!'):
-                        pass
+            with bg.pushed_to('Nf6', "Petrov's Defense") as position:
+                position['comment'] = 'Contrariamente a su nombre,<br/>negras contrataca e4 sin defender e5'
+                position['arrows'].append(chess.svg.Arrow(chess.F6, chess.E4, color='red'))
+                with bg.pushed_to('Nxe5', "Petrov's Defense: Clasical variation") as position:
+                    position['comment'] = 'Blancas aprovecha la ventaja de tempo.<br/>'
+                    with bg.pushed_to('Nxe4', 'Russian game: Damiano variation') as position:
+                        position['fillcolor'] = 'yellow'
+                        position['style'] = 'filled'
+                        with bg.pushed_to('Qe2', '...') as position:
+                            position['comment'] = 'Blancas finge un ataque al caballo'
+                            position['arrows'].append(chess.svg.Arrow(chess.E2, chess.E4, color='red'))
+                            with bg.pushed_to('Nf6', '...') as position:
+                                position['comment'] = 'Habiendo saciado su sed,<br/>Negras regresa el caballo.'
+                                #position['arrows'].append(chess.svg.Arrow(chess.E2, chess.E4, color='red'))
+                                with bg.pushed_to('Nc6', 'Copycat trap') as position:
+                                    position['comment'] = 'Jaque descubierto. Cualquier respuesta de Negras<br/> pierde la dama.'
+                                    position['arrows'].append(chess.svg.Arrow(chess.C6, chess.D8, color='red'))
+                                    position['arrows'].append(chess.svg.Arrow(chess.E2, chess.E8, color='red'))
+                                    position['fillcolor'] = 'red'
+                                    position['style'] = 'filled'
+                    with bg.pushed_to('d6', '...') as position:
+                        position['comment'] = 'Negras no cede ante la tentación Nxe4 y echa al caballo'
+                        position['arrows'].append(chess.svg.Arrow(chess.D6, chess.E5, color='red'))
+                        with bg.pushed_to('Nxf7', 'Cochrane Gambit') as position:
+                            position['comment'] = 'Blancas no tiene marcha atrás'
+                            
             with bg.pushed_to('Nc6', "King's Knight: Normal variation") as position:
                 position['comment'] = 'Negras defiende el peón e5'
                 position['arrows'].append(chess.svg.Arrow(chess.C6, chess.E5, color='yellow'))
@@ -108,8 +138,13 @@ with bg.pushed_to('e4', "King's Pawn") as position:
                     position['comment'] = 'Blancas ataca al peón débil en f7'
                     position['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
                     with bg.pushed_to('Bc5', 'Italian game: Giuoco Piano'):
-                        with bg.pushed_to('b4', "Italian game: Evan's Gambit"):
-                            pass
+                        with bg.pushed_to('b4', "Italian game: Evan's Gambit") as position:
+                            position['year'] = 1827
+                            position['games'] += [(1852, 'Evergreen game')]
+                            position['games'] += [(1995, 'Kasparov vs. Anand')]
+                            position['comment'] = 'Blancas ofrece un peón para atraer al alfil.'
+                            with bg.pushed_to('Bxb4', "Italian game: Evan's Gambit accepted") as position:
+                                pass
                     with bg.pushed_to('Nf6', 'Italian game: Two Knights Defense'):
                         with bg.pushed_to('Ng5', 'Italian game: Two Knights Defense &amp; Knight Attack'):
                             with bg.pushed_to('d5', 'Italian game: Two Knights Defense &amp; Knight Attack: Normal variation'):
@@ -121,8 +156,8 @@ with bg.pushed_to('e4', "King's Pawn") as position:
                     pass
                 with bg.pushed_to('d4', 'Scotch Game'):
                     pass
-            with bg.pushed_to('d6', "Philidor's Defense"):
-                pass
+            with bg.pushed_to('d6', "Philidor's Defense") as position:
+                position['arrows'].append(chess.svg.Arrow(chess.D6, chess.E5, color='yellow'))
 
 with bg.pushed_to('d4', "Queen's Pawn") as position:
     position['comment'] = 'Blancas toma control del centro<br/>pero sólo le abre paso al alfil c'
