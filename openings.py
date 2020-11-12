@@ -9,7 +9,6 @@ import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout, to_agraph
 from contextlib import contextmanager
 
-
 CACHE = Path('.png_cache/')
 CACHE.mkdir(exist_ok=True)
 
@@ -21,6 +20,7 @@ class BoardGraph:
         self.depth = 0
         node_id = self.position_id()
         self.dg.add_node(node_id, title='Initial', comment='Infinitos caminos se abren...', games=[])
+        self.initial_position = self.dg.nodes[node_id]
         self.save_png()
 
     def save_svg(self, path):
@@ -202,17 +202,28 @@ with bg.pushed_to('f3', "f3") as p:
                 p['fontcolor'] = 'white'
 
 
-with open('estoykastico_vs_SlickSherm_2020.11.11.pgn') as pgn:
-    game = read_game(pgn)
+for pgn in Path('./games').glob('*.pgn'):
+    print(f'Reading {pgn}...')
+    with open(pgn) as pgn_data:
+        game = read_game(pgn_data)
 
+    for k, v in game.headers.items():
+        print(f'{k}:\t{v}')
 
-for m in game.mainline_moves():
-    san = bg.board.san(m)
-    print(f'{m}: {san}')
-    p = bg.push(san)
-    if bg.board.is_checkmate() or bg.depth == 8:
+    bg.board.reset()
+    # p = bg.initial_position
+    for m in game.mainline_moves():
+        san = bg.board.san(m)
+        # print(f'{m}: {san}')
+        p = bg.push(san)
+        bg.save_png()
+
+    termination = game.headers['Termination']
+    if bg.board.is_checkmate() or 'resignation' in termination:
         p['title'] = game.headers['White'] + 'vs.' + game.headers['Black']
         p['year'] = game.headers['Date']
-        p['fillcolor'] = 'white'
+        p['comment'] = termination
+        p['fillcolor'] = 'white' if game.headers['White'] in termination else 'black'
         p['style'] = 'filled'
-    bg.save_png()
+        print(p)
+        bg.save_png()
