@@ -17,7 +17,7 @@ class BoardGraph:
     def __init__(self):
         self.board = chess.Board()
         self.dg = nx.DiGraph(bgcolor='bisque')
-
+        self.depth = 0
         node_id = self.position_id()
         self.dg.add_node(node_id, title='Initial', comment='Infinitos caminos se abren...', games=[])
         self.save_png()
@@ -39,6 +39,7 @@ class BoardGraph:
         comment = node.get('comment', '')
         node['label'] = f'<<table cellspacing=\"0\" border=\"0\" cellborder=\"1\">' + \
                              f'<tr><td>{title}</td></tr>' + \
+                             f'<tr><td>Depth: {self.depth}</td></tr>' + \
                              f'<tr><td>Año: {year}</td></tr>' + \
                              f'<tr><td><img src=\"{png_path}\" /></td></tr>' + \
                              f'<tr><td>{comment}</td></tr>'
@@ -56,21 +57,29 @@ class BoardGraph:
     def position_id(self):
         return md5(repr(self.board).encode('utf8')).hexdigest()
 
+    def push(self, move_san, title=''):
+        current_id = self.position_id()
+        move = self.board.parse_san(move_san)
+        self.board.push_san(move_san)
+        self.depth += 1
+        new_id = self.position_id()
+        self.dg.add_node(new_id, title=title, arrows=[(move.from_square, move.to_square)])
+        self.dg.add_edge(current_id, new_id, label=' ' + move_san)
+        node = self.dg.nodes[new_id]
+        node['games'] = []
+        return node
+
+    def pop(self):
+        self.depth -= 1
+        return self.board.pop()
+
     @contextmanager
     def pushed_to(self, move_san, title=''):
         try:
-            current_id = self.position_id()
-            move = self.board.parse_san(move_san)
-            self.board.push_san(move_san)
-            new_id = self.position_id()
-            self.dg.add_node(new_id, title=title, arrows=[(move.from_square, move.to_square)])
-            self.dg.add_edge(current_id, new_id, label=' ' + move_san)
-            node = self.dg.nodes[new_id]
-            node['games'] = []
-            yield node
+            yield self.push(move_san, title=title)
             self.save_png()
         finally:
-            self.board.pop()
+            self.pop()
  
 
 bg = BoardGraph()
