@@ -97,19 +97,18 @@ with bg.pushed_to('e4', "King's Pawn") as position:
             position['comment'] = 'Blancas ataca al peón débil en f7'
             position['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
 
-            with bg.pushed_to('Nf6', "...") as position:
-                position['comment'] = 'Negras ignora la amenaza y ataca e4'
-                position['arrows'].append(chess.svg.Arrow(chess.F6, chess.E4, color='red'))
-                position['fillcolor'] = 'yellow'
-                position['style'] = 'filled'
+            with bg.pushed_to('Nc6', "...") as position:
+                position['comment'] = 'Negras ignora la amenaza y defiende e5,<br/>que no está atacado aún'
+                position['arrows'].append(chess.svg.Arrow(chess.C6, chess.E5, color='yellow'))
 
                 with bg.pushed_to('Qh5', "...") as position:
                     position['comment'] = 'Blancas aprovecha y prepara un mate en 1 en f7'
                     position['arrows'].append(chess.svg.Arrow(chess.H5, chess.F7, color='red'))
                     position['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
 
-                    with bg.pushed_to('Nxe4', "...") as position:
-                        position['comment'] = 'Negras no se dan por aludidas'
+                    with bg.pushed_to('Nf6', "...") as position:
+                        position['comment'] = 'Negras ataca a la reina.'
+                        position['arrows'].append(chess.svg.Arrow(chess.F6, chess.H5, color='red'))
 
                         with bg.pushed_to('Qxf7', "Scholar's mate / Mate del pastor") as position:
                             position['comment'] = 'Jaque mate. Gana Blancas'
