@@ -17,18 +17,25 @@ jobs:
         python-version: 3.8
     - name: Generate Pages
       run: |
+        pwd
+        ls
+
         sudo apt update
         sudo apt install python3-dev graphviz libgraphviz-dev pkg-config
-        git clone https://github.com/ph1t0/estatico.git
-        ls
-        pwd
         pip install -U pip
-        pip install -r requirements.txt
-        ./build 
+
+        git clone https://github.com/ph1t0/estatico.git
         sed -i "/FREEZE_FOLDER = /c\FREEZE_FOLDER = $(pwd)/public" estatico/estatico/config.cfg
         cat estatico/estatico/config.cfg
-        cd estatico
-        make pages
+
+        pip install -r estatico/requirements.txt
+        pip install estatico
+
+	    export FLASK_ENV=development
+	    pager
+
+        pip install -r requirements.txt
+        ./build 
         cp openings.svg public/
         cp -r .png_cache public/
         echo '<img src="openings.svg">' >> public/index.html
