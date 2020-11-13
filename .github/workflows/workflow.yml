@@ -40,7 +40,7 @@ jobs:
         ./build 
         cp openings.svg public/
         cp -r .png_cache public/
-        echo '<img src="openings.svg">' >> public/index.html
+        echo '<object data="openings.svg" type="image/svg+xml">' >> public/index.html
     - name: Deploy to GitHub Pages
       if: success()
       uses: crazy-max/ghaction-github-pages@v2
