@@ -1,4 +1,3 @@
-wheel
 python-chess
 pygraphviz
 graphviz
