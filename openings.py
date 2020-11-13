@@ -9,7 +9,7 @@ import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout, to_agraph
 from contextlib import contextmanager
 
-CACHE = Path('.png_cache/')
+CACHE = Path('./public/')
 CACHE.mkdir(exist_ok=True)
 
 
@@ -21,12 +21,13 @@ class BoardGraph:
         node_id = self.position_id()
         self.dg.add_node(node_id, title='Initial', comment='Infinitos caminos se abren...', games=[])
         self.initial_position = self.dg.nodes[node_id]
+        self.initial_position['year'] = '~6 AD'
         self.save_png()
 
     def save_svg(self, path):
         A = to_agraph(self.dg)
         A.layout('dot')
-        A.draw(path)
+        A.draw(str(path))
 
     def save_png(self):
         node_id = self.position_id()

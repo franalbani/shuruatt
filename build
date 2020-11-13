@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
 from openings import bg
+from pathlib import Path
 
-bg.save_svg('openings.svg')
+public = Path('public/').mkdir(exists_ok=True)
+
+bg.save_svg(public.joinpath('openings.svg'))
+
+with open(public.joinpath('index.html', 'w') as index:
+    index.write('<!doctype html><html><title>Openings</title><object data="openings.svg" type="image/svg+xml">')
