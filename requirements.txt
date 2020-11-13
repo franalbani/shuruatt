@@ -1,3 +1,4 @@
+wheel
 python-chess
 pygraphviz
 cairosvg
