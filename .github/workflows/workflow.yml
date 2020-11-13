@@ -31,7 +31,7 @@ jobs:
         pip install -r estatico/requirements.txt
         pip install estatico
 
-	    export FLASK_ENV=development
+        export FLASK_ENV=development
 	    pager
 
         pip install -r requirements.txt
