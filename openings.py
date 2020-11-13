@@ -2,7 +2,7 @@ import chess
 from chess.pgn import read_game
 from chess.svg import board as board2svg
 from cairosvg import svg2png
-from pygraphviz import Digraph
+from graphviz import Digraph
 from hashlib import md5
 from pathlib import Path
 import networkx as nx

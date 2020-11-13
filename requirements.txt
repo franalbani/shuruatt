@@ -1,5 +1,6 @@
 wheel
 python-chess
 pygraphviz
+graphviz
 cairosvg
 networkx
