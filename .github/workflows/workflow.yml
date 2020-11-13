@@ -28,8 +28,9 @@ jobs:
         sed -i "/FREEZE_FOLDER = /c\FREEZE_FOLDER = $(pwd)/public" estatico/estatico/config.cfg
         cat estatico/estatico/config.cfg
 
-        pip install -r estatico/requirements.txt
-        pip install estatico
+        cd estatico
+        pip install -r requirements.txt
+        pip install .
 
         export FLASK_ENV=development
         pager
