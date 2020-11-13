@@ -17,7 +17,7 @@ jobs:
         python-version: 3.8
     - name: Generate Pages
       run: |
-        git clone git@github.com:ph1t0/estatico.git
+        git clone https://github.com/ph1t0/estatico.git
         ls
         pwd
         sed -i "/FREEZE_FOLDER = /c\FREEZE_FOLDER = $(pwd)/public" estatico/estatico/config.cfg
