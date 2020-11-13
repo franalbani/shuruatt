@@ -1,12 +1,34 @@
-name: Nap time
+name: Website
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Sleep for 10 seconds
-      uses: jakejarvis/wait-action@master
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
       with:
-        time: '10s'
+        python-version: 3.8
+    - name: Generate Pages
+      run: |
+        git clone git@github.com:ph1t0/estatico.git
+        ls
+        pwd
+        sed -i "/FREEZE_FOLDER = /c\FREEZE_FOLDER = $(pwd)/public" estatico/estatico/config.cfg
+        cat estatico/estatico/config.cfg
+        cd estatico
+        make pages
+    - name: Deploy to GitHub Pages
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v2
+      with:
+        target_branch: gh-pages
+        build_dir: public
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
