@@ -32,7 +32,7 @@ jobs:
         pip install estatico
 
         export FLASK_ENV=development
-	    pager
+        pager
 
         pip install -r requirements.txt
         ./build 
