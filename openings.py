@@ -9,7 +9,7 @@ import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout, to_agraph
 from contextlib import contextmanager
 
-CACHE = Path('./public/')
+CACHE = Path('.png_cache')
 CACHE.mkdir(exist_ok=True)
 
 
@@ -19,9 +19,12 @@ class BoardGraph:
         self.dg = nx.DiGraph(bgcolor='bisque')
         self.depth = 0
         node_id = self.position_id()
-        self.dg.add_node(node_id, title='Initial', comment='Infinitos caminos se abren...', games=[])
+        self.dg.add_node(node_id, title='Initial', games=[])
         self.initial_position = self.dg.nodes[node_id]
         self.initial_position['year'] = '~6 AD'
+        self.initial_position['comment'] = 'Al principio, la infinitud del juego<br/>'
+        self.initial_position['comment'] += 'hace imposible imaginar todos los<br/>'
+        self.initial_position['comment'] += 'futuros posibles.<br/>'
         self.save_png()
 
     def save_svg(self, path):
@@ -59,6 +62,17 @@ class BoardGraph:
     def position_id(self):
         return md5(repr(self.board).encode('utf8')).hexdigest()
 
+    @contextmanager
+    def position(self):
+        try:
+            current_id = self.position_id()
+            self.dg.add_node(current_id)
+            node = self.dg.nodes[current_id]
+            node['games'] = []
+            yield node
+        finally:
+            self.save_png()
+
     def push(self, move_san, title=None):
         current_id = self.position_id()
         move = self.board.parse_san(move_san)
@@ -69,6 +83,7 @@ class BoardGraph:
         self.dg.add_edge(current_id, new_id, label=' ' + move_san)
         node = self.dg.nodes[new_id]
         node['games'] = []
+        self.save_png()
         if title:
             node['title'] = title
         return node
@@ -81,10 +96,9 @@ class BoardGraph:
     def pushed_to(self, move_san, title=''):
         try:
             yield self.push(move_san, title=title)
-            self.save_png()
         finally:
             self.pop()
- 
+
 
 bg = BoardGraph()
 
@@ -217,7 +231,6 @@ for pgn in Path('./games').glob('*.pgn'):
         san = bg.board.san(m)
         # print(f'{m}: {san}')
         p = bg.push(san)
-        bg.save_png()
 
     termination = game.headers['Termination']
     if bg.board.is_checkmate() or 'resignation' in termination:
@@ -228,3 +241,15 @@ for pgn in Path('./games').glob('*.pgn'):
         p['style'] = 'filled'
         print(p)
         bg.save_png()
+
+from chess import H8, H5, C6, A6, Piece, WHITE, BLACK, KING, PAWN
+
+bg.board.clear()
+bg.board.set_piece_at(H8, Piece(KING, WHITE))
+bg.board.set_piece_at(A6, Piece(KING, BLACK))
+bg.board.set_piece_at(C6, Piece(PAWN, WHITE))
+bg.board.set_piece_at(H5, Piece(PAWN, BLACK))
+with bg.position() as p:
+    p['Title'] = 'Estudio de Reti'
+    p['Depth'] = 0
+    p['year'] = 0
