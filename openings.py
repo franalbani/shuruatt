@@ -111,6 +111,12 @@ with bg.pushed_to('e4', "King's Pawn") as p:
     with bg.pushed_to('e5', 'Open game') as p:
         p['comment'] = 'Negras reclama su parte del centro<br/>y también abre las diagonales'
 
+        with bg.pushed_to('Qf3', "Napoleon's opening") as p:
+            pass
+
+        with bg.pushed_to('Qh5', "Parham's opening") as p:
+            pass
+
         with bg.pushed_to('Bc4', "Bishop's opening") as p:
             p['comment'] = 'Blancas ataca al peón débil en f7'
             p['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
