@@ -3,3 +3,4 @@ pygraphviz
 graphviz
 cairosvg
 networkx
+sh
