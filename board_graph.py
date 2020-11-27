@@ -28,7 +28,7 @@ class BoardGraph:
 
     def save_svg(self, path):
         A = to_agraph(self.dg)
-        A.layout('dot')
+        A.layout('dot') # 'twopi' 'circo' 'fdp'
         A.draw(str(path))
 
     def save_png(self):
@@ -84,7 +84,6 @@ class BoardGraph:
         node['games'] = []
         if title:
             node['title'] = title
-        self.save_png()
         return node
 
     def pop(self):
@@ -95,5 +94,6 @@ class BoardGraph:
     def pushed_to(self, move_san, title=None):
         try:
             yield self.push(move_san, title=title)
+            self.save_png()
         finally:
             self.pop()
