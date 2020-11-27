@@ -113,6 +113,8 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                         p['comment']  = "Negras continua el intercambio de piezas"
                                         with bg.pushed_to('Nxf7', 'Fried Liver attack') as p:
                                             p['comment'] = 'Blancas sorprende sacrificando un caballo por un peón<br/>a cambio de exponer al rey.'
+                                            p['games'] += [(1610, 'Polerio vs. Domenico')]
+                                            p['year'] = 1610
                                             with bg.pushed_to('Kxf7', '...') as p:
                                                 p['comment'] = 'Negras acepta el reto'
                                                 with bg.pushed_to('Qf3', '...') as p:
@@ -124,6 +126,8 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                                     with bg.pushed_to('Ke6', '...') as p:
                                                         p['comment'] = "La mejor defensa de Negras"
                                                         p['games'] += [(1850, 'Paul Morphy vs. Alonzo Morphy')]
+                                                        with bg.pushed_to('Nc3', '...') as p:
+                                                            p['comment'] = 'Blancas suma presión al caballo en d5<br/>pineado al rey'
                             with bg.pushed_to('Bc5', 'Traxler counter-attack') as p:
                                 p['comment'] = "Negras prepara una sorpresa a Nxf7"
                                 p['arrows'].append(chess.svg.Arrow(chess.C5, chess.F2, color='red'))
