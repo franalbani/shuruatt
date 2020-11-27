@@ -88,6 +88,8 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                 with bg.pushed_to('Bc4', 'Italian game') as p:
                     p['comment'] = 'Blancas ataca al peón débil en f7'
                     p['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
+
+                    ### GIUOCO PIANO
                     with bg.pushed_to('Bc5', 'Italian game: Giuoco Piano'):
                         with bg.pushed_to('b4', "Italian game: Evan's Gambit") as p:
                             p['url'] = 'https://en.wikipedia.org/wiki/Evans_Gambit'
@@ -96,14 +98,41 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                             p['games'] += [(1995, 'Kasparov vs. Anand')]
                             p['comment'] = 'Blancas ofrece un peón para atraer al alfil.'
                             with bg.pushed_to('Bxb4', "Italian game: Evan's Gambit accepted") as p:
-                                pass
+                                p['comment'] = 'La mejor opción de Negras es aceptar el peón.'
+
+                    ### TWO KNIGHTS DEFENSE
                     with bg.pushed_to('Nf6', 'Italian game: Two Knights Defense'):
                         with bg.pushed_to('Ng5', 'Italian game: Two Knights Defense &amp; Knight Attack'):
-                            with bg.pushed_to('d5', 'Italian game: Two Knights Defense &amp; Knight Attack: Normal variation'):
-                                with bg.pushed_to('exd5', '...'):
-                                    with bg.pushed_to('Nxd5', '...'):
-                                        with bg.pushed_to('Nxf7', 'Italian game: Fried Liver attack'):
-                                            pass
+                            with bg.pushed_to('d5', 'Italian game: Two Knights Defense &amp; Knight Attack:<br/>Normal variation') as p:
+                                p['comment'] = "Negras quiere evitar el fork de Nxf7.<br/>Razona: bloqueo al alfil y tengo dos defensores de la casilla d5"
+                                p['arrows'].append(chess.svg.Arrow(chess.D8, chess.D5, color='yellow'))
+                                p['arrows'].append(chess.svg.Arrow(chess.F6, chess.D5, color='yellow'))
+                                with bg.pushed_to('exd5', '...') as p:
+                                    p['comment'] = "A Blancas a no le importa, pues no tiene<br/>planeado finalizar el intercambio con el alfil"
+                                    with bg.pushed_to('Nxd5', '...') as p:
+                                        p['comment']  = "Negras continua el intercambio de piezas"
+                                        with bg.pushed_to('Nxf7', 'Italian game: Fried Liver attack') as p:
+                                            p['comment'] = 'Blancas sorprende sacrificando un caballo por un peón<br/>a cambio de exponer al rey.'
+                                            with bg.pushed_to('Kxf7', 'Italian game: Fried Liver attack') as p:
+                                                p['comment'] = 'Negras acepta el reto'
+                                                with bg.pushed_to('Qf3', 'Italian game: Fried Liver attack') as p:
+                                                    p['comment'] = "Blancas muestra sus cartas"
+                                                    with bg.pushed_to('Kg8', 'Italian game: Fried Liver attack') as p:
+                                                        p['comment'] = "El miedo le costó caro a Negras.<br/>El mate en 3 es inevitable"
+                                                        p['fillcolor'] = 'white'
+                                                        p['style'] = 'filled'
+                                                    with bg.pushed_to('Ke6', 'Italian game: Fried Liver attack') as p:
+                                                        p['comment'] = "La mejor defensa de Negras"
+                                                        p['games'] += [(1850, 'Paul Morphy vs. Alonzo Morphy')]
+                            with bg.pushed_to('Bc5', 'Italian game: Two Knights Defense &amp; Knight Attack:<br/>Traxler counter-attack') as p:
+                                p['comment'] = "Negras prepara una sorpresa a Nxf7"
+                                p['arrows'].append(chess.svg.Arrow(chess.C5, chess.F2, color='red'))
+                                with bg.pushed_to('Nxf7', '...') as p:
+                                    with bg.pushed_to('Bxf2', '...') as p:
+                                        with bg.pushed_to('Kxf2', '...') as p:
+                                            with bg.pushed_to('Nxe4', '...') as p:
+                                                pass
+
                 with bg.pushed_to('Bb5', 'Ruy Lopez'):
                     pass
                 with bg.pushed_to('d4', 'Scotch Game'):
@@ -127,39 +156,39 @@ with bg.pushed_to('f3', "f3") as p:
                 p['fontcolor'] = 'white'
 
 
-for pgn in Path('./games').glob('*.pgn'):
-    print(f'Reading {pgn}...')
-    with open(pgn) as pgn_data:
-        game = read_game(pgn_data)
-
-    for k, v in game.headers.items():
-        print(f'{k}:\t{v}')
-
-    bg.board.reset()
-    # p = bg.initial_position
-    for m in game.mainline_moves():
-        san = bg.board.san(m)
-        # print(f'{m}: {san}')
-        p = bg.push(san)
-
-    termination = game.headers['Termination']
-    if bg.board.is_checkmate() or 'resignation' in termination:
-        p['title'] = game.headers['White'] + 'vs.' + game.headers['Black']
-        p['year'] = game.headers['Date']
-        p['comment'] = termination
-        p['fillcolor'] = 'white' if game.headers['White'] in termination else 'black'
-        p['style'] = 'filled'
-        print(p)
-        bg.save_png()
-
-from chess import H8, H5, C6, A6, Piece, WHITE, BLACK, KING, PAWN
-
-bg.board.clear()
-bg.board.set_piece_at(H8, Piece(KING, WHITE))
-bg.board.set_piece_at(A6, Piece(KING, BLACK))
-bg.board.set_piece_at(C6, Piece(PAWN, WHITE))
-bg.board.set_piece_at(H5, Piece(PAWN, BLACK))
-with bg.position() as p:
-    p['Title'] = 'Estudio de Reti'
-    p['Depth'] = 0
-    p['year'] = 0
+#   for pgn in Path('./games').glob('*.pgn'):
+#       print(f'Reading {pgn}...')
+#       with open(pgn) as pgn_data:
+#           game = read_game(pgn_data)
+#   
+#       for k, v in game.headers.items():
+#           print(f'{k}:\t{v}')
+#   
+#       bg.board.reset()
+#       # p = bg.initial_position
+#       for m in game.mainline_moves():
+#           san = bg.board.san(m)
+#           # print(f'{m}: {san}')
+#           p = bg.push(san)
+#   
+#       termination = game.headers['Termination']
+#       if bg.board.is_checkmate() or 'resignation' in termination:
+#           p['title'] = game.headers['White'] + 'vs.' + game.headers['Black']
+#           p['year'] = game.headers['Date']
+#           p['comment'] = termination
+#           p['fillcolor'] = 'white' if game.headers['White'] in termination else 'black'
+#           p['style'] = 'filled'
+#           print(p)
+#           bg.save_png()
+#   
+#   from chess import H8, H5, C6, A6, Piece, WHITE, BLACK, KING, PAWN
+#   
+#   bg.board.clear()
+#   bg.board.set_piece_at(H8, Piece(KING, WHITE))
+#   bg.board.set_piece_at(A6, Piece(KING, BLACK))
+#   bg.board.set_piece_at(C6, Piece(PAWN, WHITE))
+#   bg.board.set_piece_at(H5, Piece(PAWN, BLACK))
+#   with bg.position() as p:
+#       p['Title'] = 'Estudio de Reti'
+#       p['Depth'] = 0
+#       p['year'] = 0
