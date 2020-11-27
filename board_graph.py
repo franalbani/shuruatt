@@ -18,7 +18,7 @@ class BoardGraph:
         self.dg = nx.DiGraph(bgcolor='bisque')
         self.depth = 0
         node_id = self.position_id()
-        self.dg.add_node(node_id, title='Initial', games=[])
+        self.dg.add_node(node_id, title='Ajedrez Clásico', games=[])
         self.initial_position = self.dg.nodes[node_id]
         self.initial_position['year'] = '~6 AD'
         self.initial_position['comment'] = 'Al principio, la infinitud del juego<br/>'
@@ -46,8 +46,12 @@ class BoardGraph:
 
         node['label'] = f'<<table cellspacing=\"0\" border=\"0\" cellborder=\"1\">' + \
                              f'<tr><td>{title}</td></tr>'
-        for st in subtitles:
-            node['label'] += f'<tr><td>{st}</td></tr>'
+
+        if len(subtitles) % 2 != 0:
+            subtitles.append('')
+
+        for a, b in zip(subtitles[::2], subtitles[1::2]):
+            node['label'] += f'<tr><td>{a}: {b}</td></tr>'
 
         node['label'] += \
                              f'<tr><td>Depth: {self.depth}</td></tr>' + \
