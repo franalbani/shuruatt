@@ -49,7 +49,7 @@ with bg.pushed_to('e4', "King's Pawn") as p:
             with bg.pushed_to('Nf6', "Petrov's Defense") as p:
                 p['comment'] = 'Contrariamente a su nombre,<br/>negras contrataca e4 sin defender e5'
                 p['arrows'].append(chess.svg.Arrow(chess.F6, chess.E4, color='red'))
-                with bg.pushed_to('Nxe5', "Petrov's Defense: Clasical variation") as p:
+                with bg.pushed_to('Nxe5', "Clasical variation") as p:
                     p['comment'] = 'Blancas aprovecha la ventaja de tempo.<br/>'
                     with bg.pushed_to('Nxe4', 'Russian game: Damiano variation') as p:
                         p['fillcolor'] = 'yellow'
@@ -73,7 +73,7 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                             p['comment'] = 'Blancas no tiene marcha atrás'
                             with bg.pushed_to('Kxf7', '...') as p:
                                 p['comment'] = 'Negras no tiene alternativa que salvar a la torre<br/>renunciando al derecho de enrrocarse.'
-                                with bg.pushed_to('d4', 'Cochrane Gambit: center variation') as p:
+                                with bg.pushed_to('d4', 'Center variation') as p:
                                     p['comment'] = 'Blancas aprovecha que negras tiene mucho en su plato<br/>e incluso le tienta a Nxe4.'
                                     with bg.pushed_to('Nxe4', '...') as p:
                                         p['fillcolor'] = 'red'
@@ -82,7 +82,7 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                         with bg.pushed_to('Qh5', '...') as p:
                                             p['comment'] = 'Blancas dará una serie de jaques que<br/> irremediablemente terminan en Qxe4.'
                             
-            with bg.pushed_to('Nc6', "King's Knight: Normal variation") as p:
+            with bg.pushed_to('Nc6', "Normal variation") as p:
                 p['comment'] = 'Negras defiende el peón e5'
                 p['arrows'].append(chess.svg.Arrow(chess.C6, chess.E5, color='yellow'))
                 with bg.pushed_to('Bc4', 'Italian game') as p:
@@ -90,20 +90,20 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                     p['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
 
                     ### GIUOCO PIANO
-                    with bg.pushed_to('Bc5', 'Italian game: Giuoco Piano'):
-                        with bg.pushed_to('b4', "Italian game: Evan's Gambit") as p:
+                    with bg.pushed_to('Bc5', 'Giuoco Piano'):
+                        with bg.pushed_to('b4', "Evan's Gambit") as p:
                             p['url'] = 'https://en.wikipedia.org/wiki/Evans_Gambit'
                             p['year'] = 1827
                             p['games'] += [(1852, 'Evergreen game')]
                             p['games'] += [(1995, 'Kasparov vs. Anand')]
                             p['comment'] = 'Blancas ofrece un peón para atraer al alfil.'
-                            with bg.pushed_to('Bxb4', "Italian game: Evan's Gambit accepted") as p:
+                            with bg.pushed_to('Bxb4', "Evan's Gambit accepted") as p:
                                 p['comment'] = 'La mejor opción de Negras es aceptar el peón.'
 
                     ### TWO KNIGHTS DEFENSE
-                    with bg.pushed_to('Nf6', 'Italian game: Two Knights Defense'):
-                        with bg.pushed_to('Ng5', 'Italian game: Two Knights Defense &amp; Knight Attack'):
-                            with bg.pushed_to('d5', 'Italian game: Two Knights Defense &amp; Knight Attack:<br/>Normal variation') as p:
+                    with bg.pushed_to('Nf6', 'Two Knights Defense'):
+                        with bg.pushed_to('Ng5', 'Knight Attack'):
+                            with bg.pushed_to('d5', 'Normal variation') as p:
                                 p['comment'] = "Negras quiere evitar el fork de Nxf7.<br/>Razona: bloqueo al alfil y tengo dos defensores de la casilla d5"
                                 p['arrows'].append(chess.svg.Arrow(chess.D8, chess.D5, color='yellow'))
                                 p['arrows'].append(chess.svg.Arrow(chess.F6, chess.D5, color='yellow'))
@@ -111,20 +111,20 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                     p['comment'] = "A Blancas a no le importa, pues no tiene<br/>planeado finalizar el intercambio con el alfil"
                                     with bg.pushed_to('Nxd5', '...') as p:
                                         p['comment']  = "Negras continua el intercambio de piezas"
-                                        with bg.pushed_to('Nxf7', 'Italian game: Fried Liver attack') as p:
+                                        with bg.pushed_to('Nxf7', 'Fried Liver attack') as p:
                                             p['comment'] = 'Blancas sorprende sacrificando un caballo por un peón<br/>a cambio de exponer al rey.'
-                                            with bg.pushed_to('Kxf7', 'Italian game: Fried Liver attack') as p:
+                                            with bg.pushed_to('Kxf7', '...') as p:
                                                 p['comment'] = 'Negras acepta el reto'
-                                                with bg.pushed_to('Qf3', 'Italian game: Fried Liver attack') as p:
+                                                with bg.pushed_to('Qf3', '...') as p:
                                                     p['comment'] = "Blancas muestra sus cartas"
-                                                    with bg.pushed_to('Kg8', 'Italian game: Fried Liver attack') as p:
+                                                    with bg.pushed_to('Kg8', '...') as p:
                                                         p['comment'] = "El miedo le costó caro a Negras.<br/>El mate en 3 es inevitable"
                                                         p['fillcolor'] = 'white'
                                                         p['style'] = 'filled'
-                                                    with bg.pushed_to('Ke6', 'Italian game: Fried Liver attack') as p:
+                                                    with bg.pushed_to('Ke6', '...') as p:
                                                         p['comment'] = "La mejor defensa de Negras"
                                                         p['games'] += [(1850, 'Paul Morphy vs. Alonzo Morphy')]
-                            with bg.pushed_to('Bc5', 'Italian game: Two Knights Defense &amp; Knight Attack:<br/>Traxler counter-attack') as p:
+                            with bg.pushed_to('Bc5', 'Traxler counter-attack') as p:
                                 p['comment'] = "Negras prepara una sorpresa a Nxf7"
                                 p['arrows'].append(chess.svg.Arrow(chess.C5, chess.F2, color='red'))
                                 with bg.pushed_to('Nxf7', '...') as p:

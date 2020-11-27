@@ -24,6 +24,7 @@ class BoardGraph:
         self.initial_position['comment'] = 'Al principio, la infinitud del juego<br/>'
         self.initial_position['comment'] += 'hace imposible imaginar todos los<br/>'
         self.initial_position['comment'] += 'futuros posibles.<br/>'
+        self.initial_position['subtitles'] = []
         self.save_png()
 
     def save_svg(self, path):
@@ -41,8 +42,14 @@ class BoardGraph:
         title = node.get('title', '')
         year = node.get('year', '????')
         comment = node.get('comment', '')
+        subtitles = node.get('subtitles', [])
+
         node['label'] = f'<<table cellspacing=\"0\" border=\"0\" cellborder=\"1\">' + \
-                             f'<tr><td>{title}</td></tr>' + \
+                             f'<tr><td>{title}</td></tr>'
+        for st in subtitles:
+            node['label'] += f'<tr><td>{st}</td></tr>'
+
+        node['label'] += \
                              f'<tr><td>Depth: {self.depth}</td></tr>' + \
                              f'<tr><td>Año: {year}</td></tr>' + \
                              f'<tr><td><img src=\"{png_path}\" /></td></tr>' + \
@@ -72,8 +79,10 @@ class BoardGraph:
         finally:
             self.save_png()
 
-    def push(self, move_san, title=None):
+    def push(self, move_san, subtitle=None):
         current_id = self.position_id()
+        current_node = self.dg.nodes[current_id]
+
         move = self.board.parse_san(move_san)
         self.board.push_san(move_san)
         self.depth += 1
@@ -82,8 +91,11 @@ class BoardGraph:
         self.dg.add_edge(current_id, new_id, label=' ' + move_san)
         node = self.dg.nodes[new_id]
         node['games'] = []
-        if title:
-            node['title'] = title
+        node['title'] = current_node['title']
+        node['subtitles'] = current_node['subtitles'].copy()
+
+        if subtitle:
+            node['subtitles'].append(subtitle)
         return node
 
     def pop(self):
@@ -91,9 +103,9 @@ class BoardGraph:
         return self.board.pop()
 
     @contextmanager
-    def pushed_to(self, move_san, title=None):
+    def pushed_to(self, move_san, subtitle=None):
         try:
-            yield self.push(move_san, title=title)
+            yield self.push(move_san, subtitle=subtitle)
             self.save_png()
         finally:
             self.pop()
