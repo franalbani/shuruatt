@@ -127,7 +127,15 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                                         p['comment'] = "La mejor defensa de Negras"
                                                         p['games'] += [(1850, 'Paul Morphy vs. Alonzo Morphy')]
                                                         with bg.pushed_to('Nc3', '...') as p:
-                                                            p['comment'] = 'Blancas suma presión al caballo en d5<br/>pineado al rey'
+                                                            p['comment'] = 'Blancas suma presión al caballo en d5<br/>inmovilizado por el alfil de c4.'
+                                                            with bg.pushed_to('Nd4', '...') as p:
+                                                                p['comment'] = 'Negras amenaza a la reina y un jaquefork en c2.'
+                                                                with bg.pushed_to('Bxd5', '...') as p:
+                                                                    p['comment'] = 'Blancas toma el caballo.'
+                                                                    with bg.pushed_to('Ke7', '...') as p:
+                                                                        p['comment'] = 'Grave error de negras<br/>El mate en 2 es inevitable.'
+                                                                        p['fillcolor'] = 'white'
+                                                                        p['style'] = 'filled'
                             with bg.pushed_to('Bc5', 'Traxler counter-attack') as p:
                                 p['comment'] = "Negras prepara una sorpresa a Nxf7"
                                 p['arrows'].append(chess.svg.Arrow(chess.C5, chess.F2, color='red'))
