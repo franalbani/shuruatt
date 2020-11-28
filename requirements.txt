@@ -4,3 +4,5 @@ graphviz
 cairosvg
 networkx
 sh
+requests
+requests_cache

@@ -8,7 +8,13 @@ from hashlib import md5
 from networkx.drawing.nx_agraph import graphviz_layout, to_agraph
 from contextlib import contextmanager
 import chess
+import requests
+import requests_cache
 
+requests_cache.install_cache('lichess_cache')
+
+
+LICHESS_API = 'https://explorer.lichess.ovh/master?moves=0&topGames=0&fen='
 
 class BoardGraph:
     def __init__(self, png_cache=Path('png_cache')):
@@ -25,6 +31,7 @@ class BoardGraph:
         self.initial_position['comment'] += 'hace imposible imaginar todos los<br/>'
         self.initial_position['comment'] += 'futuros posibles.<br/>'
         self.initial_position['subtitles'] = []
+        self.initial_position['fen'] = self.board.fen()
         self.save_png()
 
     def save_svg(self, path):
@@ -43,7 +50,6 @@ class BoardGraph:
         year = node.get('year', '????')
         comment = node.get('comment', '')
         subtitles = node.get('subtitles', [])
-
         node['label'] = f'<<table cellspacing=\"0\" border=\"0\" cellborder=\"1\">' + \
                              f'<tr><td>{title}</td></tr>'
 
@@ -52,6 +58,22 @@ class BoardGraph:
 
         for a, b in zip(subtitles[::2], subtitles[1::2]):
             node['label'] += f'<tr><td>{a}: {b}</td></tr>'
+
+        try:
+            print(f'hiting lichess for {node["title"]}')
+            resp = requests.get(LICHESS_API + node['fen']).json()
+            # eco = resp['opening']['eco']
+            # node['label'] += f'<tr><td>ECO: {eco}</td></tr>'
+            w = resp['white']
+            b = resp['black']
+            d = resp['draws']
+            t = w + b + d
+            if t > 0:
+                node['label'] += f'<tr><td>W: {100*w/t:3.0f}% B: {100*b/t:3.0f}% D: {100*d/t:3.0f}%</td></tr>'
+        except:
+            print('falló api lichess')
+            print('falló api lichess')
+            raise
 
         node['label'] += \
                              f'<tr><td>Depth: {self.depth}</td></tr>' + \
@@ -97,6 +119,7 @@ class BoardGraph:
         node['games'] = []
         node['title'] = current_node['title']
         node['subtitles'] = current_node['subtitles'].copy()
+        node['fen'] = self.board.fen()
 
         if subtitle:
             node['subtitles'].append(subtitle)
