@@ -22,11 +22,11 @@ with bg.pushed_to('e4', "King's Pawn") as p:
             pass
 
         with bg.pushed_to('Bc4', "Bishop's opening") as p:
-            p['comment'] = 'Blancas ataca al peón débil en f7'
+            p['comment'] = 'Blancas ataca al peón débil en f7.<br/>Esta apertura es útil para llegar<br/>al Italian Game sin permitir Petrov'
             p['arrows'].append(chess.svg.Arrow(chess.C4, chess.F7, color='red'))
 
             with bg.pushed_to('Nc6') as p:
-                p['comment'] = 'Negras ignora la amenaza y defiende e5,<br/>que no está atacado aún'
+                p['comment'] = 'Negras ignora la amenaza y defiende e5,<br/>que no está atacado aún.'
                 p['arrows'].append(chess.svg.Arrow(chess.C6, chess.E5, color='yellow'))
 
                 with bg.pushed_to('Qh5') as p:
@@ -42,6 +42,13 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                             p['comment'] = 'Jaque mate. Gana Blancas'
                             p['fillcolor'] = 'white'
                             p['style'] = 'filled'
+
+            with bg.pushed_to('Nf6', 'Berlin Defense') as p:
+                p['comment'] = 'Negras ignora la amenaza, evita Qh5,<br/> bloquea Qf3 y ataca a e5,<br/>que no está defendido aún.'
+                p['arrows'].append(chess.svg.Arrow(chess.F6, chess.E4, color='red'))
+                p['arrows'].append(chess.svg.Arrow(chess.F6, chess.H5, color='yellow'))
+                with bg.pushed_to('d4', 'Ponziani Gambit') as p:
+                    p['comment'] = 'Blancas no descansa y ofrece un peón<br/>a cambio de...'
 
         with bg.pushed_to('Nf3', "King's Knight") as p:
             p['comment'] = 'Blancas amenaza el peón e5'
