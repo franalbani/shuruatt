@@ -13,8 +13,28 @@ import requests_cache
 
 requests_cache.install_cache('lichess_cache')
 
+LICHESS_API = 'https://explorer.lichess.ovh/'
 
-LICHESS_API = 'https://explorer.lichess.ovh/master?moves=0&topGames=0&fen='
+
+def lichess(fen, moves=0, topGames=0, cat='master'):
+    # cat may be 'lichess'
+    ratings = 'ratings[]=1600&ratings[]=1800&ratings[]=2000&ratings[]=2200&ratings[]=2500'
+    speeds = 'speeds[]=blitz&speeds[]=rapid&speeds[]=classical'
+    url = LICHESS_API + f'{cat}?variant=standard&{speeds}&{ratings}&moves={moves}&topGames={topGames}&recentGames=0&fen={fen}'
+    try:
+        resp = requests.get(url)
+    except:
+        print(url)
+        raise
+
+    try:
+        json = resp.json()
+    except:
+        print(resp)
+        raise
+
+    return json
+
 
 class BoardGraph:
     def __init__(self, png_cache=Path('png_cache')):
@@ -75,21 +95,24 @@ class BoardGraph:
         for a, b in zip(subtitles[::2], subtitles[1::2]):
             node['label'] += f'<tr><td>{a}: {b}</td></tr>'
 
-        try:
-            print(f'hiting lichess for ' + ': '.join( [node["title"]] + node['subtitles']))
-            resp = requests.get(LICHESS_API + node['fen']).json()
-            # eco = resp['opening']['eco']
-            # node['label'] += f'<tr><td>ECO: {eco}</td></tr>'
-            w = resp['white']
-            b = resp['black']
-            d = resp['draws']
-            t = w + b + d
-            if t > 0:
-                node['label'] += f'<tr><td>W: {100*w/t:3.0f}% B: {100*b/t:3.0f}% D: {100*d/t:3.0f}%</td></tr>'
-        except:
-            print('falló api lichess')
-            print('falló api lichess')
-            raise
+        print(f'hiting lichess for ' + ': '.join( [node["title"]] + node['subtitles']))
+        resp = lichess(node['fen'])
+        # print(resp)
+        w = resp['white']
+        b = resp['black']
+        d = resp['draws']
+        t = w + b + d
+        if t > 0:
+            node['label'] += f'<tr><td>Master Games: W: {100*w/t:3.0f}% B: {100*b/t:3.0f}% D: {100*d/t:3.0f}%</td></tr>'
+
+        resp = lichess(node['fen'], cat='lichess')
+        # print(resp)
+        w = resp['white']
+        b = resp['black']
+        d = resp['draws']
+        t = w + b + d
+        if t > 0:
+            node['label'] += f'<tr><td>Lichess Games: W: {100*w/t:3.0f}% B: {100*b/t:3.0f}% D: {100*d/t:3.0f}%</td></tr>'
 
         node['label'] += \
                              f'<tr><td>Depth: {self.depth}</td></tr>' + \
@@ -126,7 +149,11 @@ class BoardGraph:
         current_node = self.dg.nodes[current_id]
 
         move = self.board.parse_san(move_san)
-        self.board.push_san(move_san)
+        try:
+            self.board.push_san(move_san)
+        except:
+            print(self.board.move_stack)
+            raise
         self.depth += 1
         new_id = self.position_id()
         self.dg.add_node(new_id, arrows=[(move.from_square, move.to_square)])
