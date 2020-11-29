@@ -40,8 +40,6 @@ with bg.pushed_to('e4', "King's Pawn") as p:
 
                         with bg.pushed_to('Qxf7', "Scholar's mate / Mate del pastor") as p:
                             p['comment'] = 'Jaque mate. Gana Blancas'
-                            p['fillcolor'] = 'white'
-                            p['style'] = 'filled'
 
             with bg.pushed_to('Nf6', 'Berlin Defense') as p:
                 p['comment'] = 'Negras ignora la amenaza, evita Qh5,<br/> bloquea Qf3 y ataca a e5,<br/>que no está defendido aún.'
@@ -88,6 +86,21 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                         p['comment'] = 'Negras cae en la trampa.'
                                         with bg.pushed_to('Qh5') as p:
                                             p['comment'] = 'Blancas dará una serie de jaques que<br/> irremediablemente terminan en Qxe4.'
+                    with bg.pushed_to('Nc6', 'Stafford Gambit') as p:
+                        with bg.pushed_to('Nxc6', 'Stafford Gambit Accepted') as p:
+                            with bg.pushed_to('dxc6') as p:
+                                p['comment'] = 'A partir de aquí se posibilitan varias trampas,<br/>dependiendo de la respuesta Blancas.'
+                                with bg.pushed_to('d3') as p:
+                                    with bg.pushed_to('Bc5') as p:
+                                        with bg.pushed_to('Bg5') as p:
+                                            with bg.pushed_to('Nxe4') as p:
+                                                p['comment'] = 'Negras ofrece la dama.'
+                                                with bg.pushed_to('Bxd8') as p:
+                                                    p['comment'] = 'Blancas no lo piensa dos veces.<br/>El mate en 2 es inevitable.'
+                                                    with bg.pushed_to('Bxf2') as p:
+                                                        with bg.pushed_to('Ke2') as p:
+                                                            with bg.pushed_to('Bg4') as p:
+                                                                pass
                             
             with bg.pushed_to('Nc6', "Normal variation") as p:
                 p['comment'] = 'Negras defiende el peón e5'
@@ -170,10 +183,7 @@ with bg.pushed_to('f3', "f3") as p:
     with bg.pushed_to('e6', "e6") as p:
         with bg.pushed_to('g4', "g4") as p:
             with bg.pushed_to('Qh4', "Fool's mate") as p:
-                p['fillcolor'] = 'black'
-                p['style'] = 'filled'
-                p['fontcolor'] = 'white'
-
+                pass
 
 #   for pgn in Path('./games').glob('*.pgn'):
 #       print(f'Reading {pgn}...')

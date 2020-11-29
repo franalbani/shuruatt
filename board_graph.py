@@ -43,7 +43,23 @@ class BoardGraph:
         node_id = self.position_id()
         node = self.dg.nodes[node_id]
         png_path = self.png_cache.joinpath(node_id + '.png')
-        svg = board2svg(self.board, arrows=node.get('arrows', []))
+        if self.board.is_checkmate():
+            if self.board.result() == '1-0':
+                check_square = self.board.king(color=chess.BLACK)
+                node['fillcolor'] = 'white'
+                node['style'] = 'filled'
+                node['fontcolor'] = 'black'
+            else:
+                check_square = self.board.king(color=chess.WHITE)
+                node['fillcolor'] = 'black'
+                node['style'] = 'filled'
+                node['fontcolor'] = 'white'
+        else:
+            check_square = None
+
+        svg = board2svg(self.board,
+                        arrows=node.get('arrows', []),
+                        check=check_square)
         svg2png(bytestring=svg, write_to=str(png_path))
         node['shape'] = 'none'
         title = node.get('title', '')
@@ -60,7 +76,7 @@ class BoardGraph:
             node['label'] += f'<tr><td>{a}: {b}</td></tr>'
 
         try:
-            print(f'hiting lichess for {node["title"]}')
+            print(f'hiting lichess for ' + ': '.join( [node["title"]] + node['subtitles']))
             resp = requests.get(LICHESS_API + node['fen']).json()
             # eco = resp['opening']['eco']
             # node['label'] += f'<tr><td>ECO: {eco}</td></tr>'
