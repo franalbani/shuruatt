@@ -101,7 +101,114 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                                         with bg.pushed_to('Ke2') as p:
                                                             with bg.pushed_to('Bg4') as p:
                                                                 pass
-                            
+                                                with bg.pushed_to('Be3') as p:
+                                                    p['comment'] = 'Blancas vio el horror;<br/>regresa.'
+                                                    with bg.pushed_to('Bxe3') as p:
+                                                        with bg.pushed_to('fxe3') as p:
+                                                            with bg.pushed_to('Qh4') as p:
+                                                                with bg.pushed_to('g3') as p:
+                                                                    with bg.pushed_to('Nxg3') as p:
+                                                                        with bg.pushed_to('hxg3') as p:
+                                                                            with bg.pushed_to('Qxh1') as p:
+                                                                                pass
+                                                with bg.pushed_to('Qe2') as p:
+                                                    with bg.pushed_to('Qxg5') as p:
+                                                        with bg.pushed_to('Qxe4') as p:
+                                                            with bg.pushed_to('Kd8') as p:
+                                                                p['comment'] = 'Negras sale del jaque dejando lugar<br/>para que la torre fije la dama al rey.'
+                                                                with bg.pushed_to('Be2') as p:
+                                                                    p['comment'] = 'Blancas intenta neutralizar Re8...'
+                                                                    with bg.pushed_to('Qc1') as p:
+                                                                        with bg.pushed_to('Bd1') as p:
+                                                                            with bg.pushed_to('Re8') as p:
+                                                                                p['comment'] = 'Blancas pierde la dama.'
+                                        with bg.pushed_to('Nc3') as p:
+                                            pass
+                                        with bg.pushed_to('h3') as p:
+                                            with bg.pushed_to('Bxf2') as p:
+                                                with bg.pushed_to('Kxf2') as p:
+                                                    with bg.pushed_to('Nxe4') as p:
+                                                        with bg.pushed_to('Kg1') as p:
+                                                            with bg.pushed_to('Qd4') as p:
+                                                                p['comment'] = 'Blancas puede forzar tablas.'
+
+                                with bg.pushed_to('e5') as p:
+                                    with bg.pushed_to('Ne4') as p:
+                                        with bg.pushed_to('d3') as p:
+                                            with bg.pushed_to('Bc5') as p:
+                                                with bg.pushed_to('dxe4') as p:
+                                                    with bg.pushed_to('Bxf2') as p:
+                                                        with bg.pushed_to('Kxf2') as p:
+                                                            with bg.pushed_to('Qxd1') as p:
+                                                                pass
+                                                        with bg.pushed_to('Ke2') as p:
+                                                            with bg.pushed_to('Bg4') as p:
+                                                                p['comment'] = 'Blancas pierde la dama.'
+                                        with bg.pushed_to('d4') as p:
+                                            with bg.pushed_to('Qh4') as p:
+                                                with bg.pushed_to('g3') as p:
+                                                    with bg.pushed_to('Nxg3') as p:
+                                                        with bg.pushed_to('fxg3') as p:
+                                                            with bg.pushed_to('Qe4') as p:
+                                                                p['comment'] = 'Blancas pierde la torre.'
+                                                                p['arrows'].append(chess.svg.Arrow(chess.E4, chess.H1, color='red'))
+                                with bg.pushed_to('Nc3') as p:
+                                    with bg.pushed_to('Bc5') as p:
+                                        with bg.pushed_to('d3') as p:
+                                            with bg.pushed_to('Ng4') as p:
+                                                with bg.pushed_to('Be3') as p:
+                                                    with bg.pushed_to('Nxe3') as p:
+                                                        with bg.pushed_to('fxe3') as p:
+                                                            with bg.pushed_to('Bxe3') as p:
+                                                                p['comment'] = 'El alfil domina.'
+                                                                p['arrows'].append(chess.svg.Arrow(chess.E3, chess.G1, color='green'))
+                                                                p['arrows'].append(chess.svg.Arrow(chess.E3, chess.C1, color='green'))
+                                        with bg.pushed_to('Bc4') as p:
+                                            with bg.pushed_to('Ng4') as p:
+                                                with bg.pushed_to('O-O') as p:
+                                                    with bg.pushed_to('Qh4') as p:
+                                                        with bg.pushed_to('h3') as p:
+                                                            with bg.pushed_to('Nxf2') as p:
+                                                                with bg.pushed_to('Qf3') as p:
+                                                                    with bg.pushed_to('Nxh3') as p:
+                                                                        p['comment'] = 'Doble jaque.'
+                                                                        with bg.pushed_to('Kh2') as p:
+                                                                            with bg.pushed_to('Nf2') as p:
+                                                                                pass
+                                                                                # SyntaxError: too many statically nested blocks
+                                                                                #   with bg.pushed_to('Kg1') as p:
+                                                                                #       with bg.pushed_to('Qh1') as p:
+                                                                                #           pass
+                                                                        with bg.pushed_to('Kh1') as p:
+                                                                            with bg.pushed_to('Nf2') as p:
+                                                                                pass
+                                                                                # SyntaxError: too many statically nested blocks
+                                                                                #   with bg.pushed_to('Kg1') as p:
+                                                                                #       with bg.pushed_to('Qh1') as p:
+                                                                                #           pass
+                                                with bg.pushed_to('Qf3') as p:
+                                                    with bg.pushed_to('Nxf2') as p:
+                                                        with bg.pushed_to('Qxf7') as p:
+                                                            pass
+                                                    with bg.pushed_to('Ne5') as p:
+                                                        p['comment'] = 'Fork dama y alfil'
+                                                        p['arrows'].append(chess.svg.Arrow(chess.E5, chess.F3, color='red'))
+                                                        p['arrows'].append(chess.svg.Arrow(chess.E5, chess.C4, color='red'))
+                                                        with bg.pushed_to('Qe2') as p:
+                                                            with bg.pushed_to('Qh4') as p:
+                                                                p['comment'] = 'Negras amenaza ganar una pieza con<br/>Bxf2+, Qxf2, Qxf2, Kxf2, Nxc4.<br/>El peón f está clavado al rey,<br/>permitiendo Bg4.'
+                                                                with bg.pushed_to('g3') as p:
+                                                                    with bg.pushed_to('Qh3') as p:
+                                                                        pass
+                                        with bg.pushed_to('Be2') as p:
+                                            with bg.pushed_to('h5') as p:
+                                                with bg.pushed_to('h3') as p:
+                                                    with bg.pushed_to('Qd4') as p:
+                                                        with bg.pushed_to('O-O') as p:
+                                                            with bg.pushed_to('Ng4') as p:
+                                                                with bg.pushed_to('hxg4') as p:
+                                                                    with bg.pushed_to('hxg4') as p:
+                                                                        p['comment'] = 'Negras amenaza Qe5.'
             with bg.pushed_to('Nc6', "Normal variation") as p:
                 p['comment'] = 'Negras defiende el peón e5'
                 p['arrows'].append(chess.svg.Arrow(chess.C6, chess.E5, color='yellow'))
