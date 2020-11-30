@@ -10,11 +10,12 @@ from contextlib import contextmanager
 import chess
 import requests
 import requests_cache
+import time
 
 requests_cache.install_cache('lichess_cache')
 
 LICHESS_API = 'https://explorer.lichess.ovh/'
-
+LICHESS_RETRIES = 10
 
 def lichess(fen, moves=0, topGames=0, cat='master'):
     # cat may be 'lichess'
@@ -22,7 +23,17 @@ def lichess(fen, moves=0, topGames=0, cat='master'):
     speeds = 'speeds[]=blitz&speeds[]=rapid&speeds[]=classical'
     url = LICHESS_API + f'{cat}?variant=standard&{speeds}&{ratings}&moves={moves}&topGames={topGames}&recentGames=0&fen={fen}'
     try:
-        resp = requests.get(url)
+        good = False
+        r = LICHESS_RETRIES
+        while not good and r > 0:
+            resp = requests.get(url)
+            r -= 1
+            if resp.status_code == 429:
+                print(resp)
+                print('waiting one minute...')
+                time.sleep(61)
+            else:
+                good = True
     except:
         print(url)
         raise
