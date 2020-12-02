@@ -224,6 +224,10 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                             p['games'] += [(1852, 'Evergreen game')]
                             p['games'] += [(1995, 'Kasparov vs. Anand')]
                             p['comment'] = 'Blancas ofrece un peón para atraer al alfil.'
+                            with bg.pushed_to('Nxb4') as p:
+                                p['comment'] = 'Negras deja desprotegido e5.'
+                                p['style'] = 'filled'
+                                p['fillcolor'] = 'yellow'
                             with bg.pushed_to('Bxb4', "Evan's Gambit accepted") as p:
                                 p['comment'] = 'La mejor opción de Negras es aceptar el peón.'
 
