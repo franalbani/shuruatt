@@ -230,6 +230,15 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                 p['fillcolor'] = 'yellow'
                             with bg.pushed_to('Bxb4', "Evan's Gambit accepted") as p:
                                 p['comment'] = 'La mejor opción de Negras es aceptar el peón.'
+                                with bg.pushed_to('c3') as p:
+                                    p['comment'] = 'Blancas sacrifió un peón a cambio de un tempo<br/>y control del centro.'
+                                    with bg.pushed_to('a5') as p:
+                                        with bg.pushed_to('d4') as p:
+                                            p['comment'] = 'Con c3 defendido por el caballo<br/>Blancas ataca en el centro.'
+                                            with bg.pushed_to('exd4') as p:
+                                                p['comment'] = 'Negras aprovecha que c3 está clavado.'
+                                                with bg.pushed_to('O-O') as p:
+                                                    p['comment'] = 'Blancas gana ventaja en desarrollo<br/>y amenaza cxd4.'
 
                     ### TWO KNIGHTS DEFENSE
                     with bg.pushed_to('Nf6', 'Two Knights Defense'):
