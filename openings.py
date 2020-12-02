@@ -276,6 +276,15 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                                                         p['comment'] = 'Grave error de negras<br/>El mate en 2 es inevitable.'
                                                                         p['fillcolor'] = 'white'
                                                                         p['style'] = 'filled'
+                                                    with bg.pushed_to('Qf6') as p:
+                                                        p['comment'] = "Negras ofrece un intercambio de reinas"
+                                                        with bg.pushed_to('Bxd5') as p:
+                                                            p['comment'] = "Blancas no lo acepta porque todavía<br/>puede capturar cosas."
+                                                            with bg.pushed_to('Be6') as p:
+                                                                with bg.pushed_to('Bxe6') as p:
+                                                                    with bg.pushed_to('Kxe6') as p:
+                                                                        with bg.pushed_to('Qb3') as p:
+                                                                            p['comment'] = "Haga lo que haga Negras, Blancas tomará b7."
                             with bg.pushed_to('Bc5', 'Traxler counter-attack') as p:
                                 p['comment'] = "Negras prepara una sorpresa a Nxf7"
                                 p['arrows'].append(chess.svg.Arrow(chess.C5, chess.F2, color='red'))
