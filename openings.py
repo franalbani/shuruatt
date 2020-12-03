@@ -226,20 +226,59 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                             p['comment'] = 'Blancas ofrece un peón para atraer al alfil.'
                             with bg.pushed_to('Nxb4') as p:
                                 p['comment'] = 'Negras deja desprotegido e5.'
+                                p['arrows'].append(chess.svg.Arrow(chess.F3, chess.E5, color='red'))
                                 p['style'] = 'filled'
                                 p['fillcolor'] = 'yellow'
                             with bg.pushed_to('Bxb4', "Evan's Gambit accepted") as p:
                                 p['comment'] = 'La mejor opción de Negras es aceptar el peón.'
                                 with bg.pushed_to('c3') as p:
                                     p['comment'] = 'Blancas sacrifió un peón a cambio de un tempo<br/>y control del centro.'
-                                    with bg.pushed_to('a5') as p:
+                                    with bg.pushed_to('Ba5') as p:
+                                        p['comment'] = 'La mejor respuesta.'
                                         with bg.pushed_to('d4') as p:
                                             p['comment'] = 'Con c3 defendido por el caballo<br/>Blancas ataca en el centro.'
                                             with bg.pushed_to('exd4') as p:
                                                 p['comment'] = 'Negras aprovecha que c3 está clavado.'
                                                 with bg.pushed_to('O-O') as p:
                                                     p['comment'] = 'Blancas gana ventaja en desarrollo<br/>y amenaza cxd4.'
-
+                            with bg.pushed_to('Bb6', "Evan's Gambit declined") as p:
+                                p['comment'] = 'Negras '
+                                with bg.pushed_to('b5') as p:
+                                    p['comment'] = 'Prematuro. Esperar a5 de Negras para que no exista Na5.'
+                                    with bg.pushed_to('Nd4') as p:
+                                        with bg.pushed_to('Nxe5') as p:
+                                            pass
+                                        with bg.pushed_to('Nd4') as p:
+                                            p['comment'] = 'Mejor respuesta'
+                                with bg.pushed_to('a4') as p:
+                                    p['games'] += [(1995, 'Kasparov vs. Piket')]
+                                    p['comment'] = ''
+                                    with bg.pushed_to('Nxb4') as p:
+                                        with bg.pushed_to('Nxe5') as p:
+                                            pass
+                                    with bg.pushed_to('a5') as p:
+                                        with bg.pushed_to('b5') as p:
+                                            with bg.pushed_to('Nd4') as p:
+                                                with bg.pushed_to('Nxe5') as p:
+                                                    p['comment'] = 'La codicia le costará caro a Blancas'
+                                                    with bg.pushed_to('Qg5') as p:
+                                                        with bg.pushed_to('Nxf7') as p:
+                                                            with bg.pushed_to('Qxg2') as p:
+                                                                with bg.pushed_to('Rf1') as p:
+                                                                    with bg.pushed_to('Qe4') as p:
+                                                                        with bg.pushed_to('Be2') as p:
+                                                                            with bg.pushed_to('Nf3') as p:
+                                                                                pass
+                                                                        with bg.pushed_to('Qe2') as p:
+                                                                            with bg.pushed_to('Nxe2') as p:
+                                                                                pass
+                            with bg.pushed_to('Bxd4') as p:
+                                p['comment'] = '<br/>'.join(['Negras contraataque amenazando la torre.',
+                                                            'Esto no conviene porque provoca a Blancas',
+                                                            'a un intercambio que a Negras no le conviene,',
+                                                            'porque está atrasado en desarrollo.'])
+                                with bg.pushed_to('c3') as p:
+                                    p['comment'] = 'El alfil es fácilmente atacable.'
                     ### TWO KNIGHTS DEFENSE
                     with bg.pushed_to('Nf6', 'Two Knights Defense'):
                         with bg.pushed_to('Ng5', 'Knight Attack'):
@@ -293,9 +332,34 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                         with bg.pushed_to('Kxf2') as p:
                                             with bg.pushed_to('Nxe4') as p:
                                                 pass
+                                        with bg.pushed_to('Kf1') as p:
+                                            with bg.pushed_to('Qe7') as p:
+                                                p['comment'] = 'Al no tener el jaque de Nxe4<br/>Negras debe defender la reina'
+                                                with bg.pushed_to('Nxh8') as p:
+                                                    p['comment'] = 'Blancas puede tomar la torre, pero le costó'
+                                                    with bg.pushed_to('Nxe4') as p:
+                                                        p['comment'] = 'mal movimiento'
+                                                        with bg.pushed_to('Qh5') as p:
+                                                            with bg.pushed_to('Qf7') as p:
+                                                                p['comment'] = 'Mala defensa: el mate en 2 es inevitable'
+                                                            with bg.pushed_to('g6') as p:
+                                                                with bg.pushed_to('Nxg6') as p:
+                                                                    with bg.pushed_to('hxg6') as p:
+                                                                        with bg.pushed_to('Qxg6') as p:
+                                                                            p['comment'] = 'Negras tiene 3 movimientos legales;<br/>solo con uno sobrevive.'
+                                                                            with bg.pushed_to('Kd8') as p:
+                                                                                pass
+                                                                               #    with bg.pushed_to('Qxe4') as p:
+                                                                               #        with bg.pushed_to('Qxe4') as p:
 
-                with bg.pushed_to('Bb5', 'Ruy Lopez'):
-                    pass
+                    # with bg.pushed_to('Nd4', 'Blackburne Shilling Gambit'):
+
+                with bg.pushed_to('Bb5', 'Ruy Lopez') as p:
+                    p['comment'] = 'Blancas busca eliminar al defensor de e5,<br/>con la intención de Nxe5.'
+                    with bg.pushed_to('a6', 'Morphy Defense') as p:
+                        p['comment'] = 'Negras empuja a Blancas a realizar el intercambio inmediatamente<br/>o perder un tempo.'
+                        with bg.pushed_to('Bxc6', 'Exchange variation') as p:
+                            pass
                 with bg.pushed_to('d4', 'Scotch Game'):
                     pass
             with bg.pushed_to('d6', "Philidor's Defense") as p:
