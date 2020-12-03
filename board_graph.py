@@ -11,6 +11,7 @@ import chess
 import requests
 import requests_cache
 import time
+from termcolor import colored
 
 requests_cache.install_cache('lichess_cache')
 
@@ -22,26 +23,34 @@ def lichess(fen, moves=0, topGames=0, cat='master'):
     ratings = 'ratings[]=1600&ratings[]=1800&ratings[]=2000&ratings[]=2200&ratings[]=2500'
     speeds = 'speeds[]=blitz&speeds[]=rapid&speeds[]=classical'
     url = LICHESS_API + f'{cat}?variant=standard&{speeds}&{ratings}&moves={moves}&topGames={topGames}&recentGames=0&fen={fen}'
-    try:
-        good = False
-        r = LICHESS_RETRIES
-        while not good and r > 0:
+
+    good = False
+    r = LICHESS_RETRIES
+    while not good and r > 0:
+
+        try:
             resp = requests.get(url)
-            r -= 1
+
             if resp.status_code == 429:
                 print(resp)
                 print('waiting one minute...')
                 time.sleep(61)
             else:
+                resp.raise_for_status() 
                 good = True
-    except:
-        print(url)
-        raise
+
+        except requests.ConnectionError as e:
+            print(colored(e, 'red'))
+            print('Reintentando...')
+        except requests.HTTPError  as e:
+            print(colored(f'HTTPError {resp.status_code}', 'red'))
+        finally:
+            r -= 1
 
     try:
         json = resp.json()
-    except:
-        print(resp)
+    except ValueError as e:
+        print(colored(f'JSON Error for {resp}', 'red'))
         raise
 
     return json
