@@ -19,7 +19,14 @@ with bg.pushed_to('e4', "King's Pawn") as p:
             pass
 
         with bg.pushed_to('Qh5', "Parham's opening") as p:
-            pass
+            with bg.pushed_to('Nc6') as p:
+                with bg.pushed_to('Bc4') as p:
+                    with bg.pushed_to('g6') as p:
+                        with bg.pushed_to('Qf3') as p:
+                            with bg.pushed_to('Nf6') as p:
+                                with bg.pushed_to('d3') as p:
+                                    with bg.pushed_to('Nd4') as p:
+                                        pass
 
         with bg.pushed_to('Bc4', "Bishop's opening") as p:
             p['comment'] = 'Blancas ataca al peón débil en f7.<br/>Esta apertura es útil para llegar<br/>al Italian Game sin permitir Petrov'
