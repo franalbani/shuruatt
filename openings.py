@@ -78,6 +78,14 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                     p['arrows'].append(chess.svg.Arrow(chess.E2, chess.E8, color='red'))
                                     p['fillcolor'] = 'red'
                                     p['style'] = 'filled'
+                            with bg.pushed_to('f5') as p:
+                                p['comment'] = 'Negras vio el horror y quiere salvar el caballo.'
+                                with bg.pushed_to('Qh5') as p:
+                                    with bg.pushed_to('g6') as p:
+                                        with bg.pushed_to('Nxg6') as p:
+                                            with bg.pushed_to('hxg6') as p:
+                                                with bg.pushed_to('Qxh8') as p:
+                                                    pass
                     with bg.pushed_to('d6') as p:
                         p['comment'] = 'Negras no cede ante la tentación Nxe4 y echa al caballo'
                         p['arrows'].append(chess.svg.Arrow(chess.D6, chess.E5, color='red'))
