@@ -394,6 +394,20 @@ with bg.pushed_to('d4', "Queen's Pawn") as p:
         with bg.pushed_to('c4', "Queen's Gambit"):
             with bg.pushed_to('dxc4', "Queen's Gambit accepted"):
                 pass
+    with bg.pushed_to('e5', "Englund Gambit") as p:
+        with bg.pushed_to('dxe5', "Englund Gambit accepted") as p:
+            with bg.pushed_to('Bc5') as p:
+                with bg.pushed_to('Nf3') as p:
+                    with bg.pushed_to('d6') as p:
+                        with bg.pushed_to('exd6') as p:
+                            with bg.pushed_to('Ne7') as p:
+                                with bg.pushed_to('dxe7') as p:
+                                    p['style'] = 'filled'
+                                    p['fillcolor'] = 'red'
+                                    with bg.pushed_to('Bxf2') as p:
+                                        with bg.pushed_to('Kxf2') as p:
+                                            with bg.pushed_to('Qxd1') as p:
+                                                pass
 
 with bg.pushed_to('f3', "f3") as p:
     with bg.pushed_to('e6', "e6") as p:
