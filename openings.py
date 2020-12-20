@@ -224,6 +224,14 @@ with bg.pushed_to('e4', "King's Pawn") as p:
                                                                 with bg.pushed_to('hxg4') as p:
                                                                     with bg.pushed_to('hxg4') as p:
                                                                         p['comment'] = 'Negras amenaza Qe5.'
+                with bg.pushed_to('d3', '') as p:
+                    with bg.pushed_to('Bc5', '') as p:
+                        with bg.pushed_to('Nxe5') as p:
+                            with bg.pushed_to('Nc6', 'Stafford Gambit Delayed') as p:
+                                with bg.pushed_to('Nxc6', 'Stafford Gambit Delayed Accepted') as p:
+                                    with bg.pushed_to('dxc6') as p:
+                                        pass
+
             with bg.pushed_to('Nc6', "Normal variation") as p:
                 p['comment'] = 'Negras defiende el peón e5'
                 p['arrows'].append(chess.svg.Arrow(chess.C6, chess.E5, color='yellow'))
