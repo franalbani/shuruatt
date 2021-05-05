@@ -7,3 +7,4 @@ sh
 requests
 requests_cache
 termcolor
+ipython
